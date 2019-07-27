@@ -6,10 +6,6 @@
     path = deps/http-parser
     url = https://github.com/Samsung/http-parser.git
     ignore = untracked
-[submodule "deps/libtuv"]
-    path = deps/libtuv
-    url = https://github.com/Samsung/libtuv.git
-    ignore = untracked
 [submodule "deps/mbedtls"]
     path = deps/mbedtls
     url = https://github.com/ARMmbed/mbedtls.git

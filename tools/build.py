@@ -249,7 +249,10 @@ def adjust_options(options):
             options.js_backtrace = "ON"
         else:
             options.js_backtrace = "OFF"
-
+    else:
+        if options.buildtype == 'release' and options.js_backtrace == 'ON':
+            print('no, you cannot enable js_backtrace in release build, see 3194e0f, force js_backtrace to OFF')
+            options.js_backtrace = "OFF"
 
 def print_progress(msg):
     print('==> %s\n' % msg)
@@ -334,11 +337,11 @@ def build_iotjs(options):
         '-DBUILD_LIB_ONLY=%s' % get_on_off(options.buildlib), # --buildlib
         '-DCREATE_SHARED_LIB=%s' % get_on_off(options.create_shared_lib),
         # --jerry-memstat
-        '-DFEATURE_MEM_STATS=%s' % get_on_off(options.jerry_memstat),
+        '-DJERRY_MEM_STATS=%s' % get_on_off(options.jerry_memstat),
         # --external-modules
         "-DEXTERNAL_MODULES='%s'" % ';'.join(options.external_modules),
         # --jerry-profile
-        "-DFEATURE_PROFILE='%s'" % options.jerry_profile,
+        "-DJERRY_PROFILE='%s'" % options.jerry_profile,
     ]
 
     if options.target_os in ['nuttx', 'tizenrt']:
@@ -349,10 +352,10 @@ def build_iotjs(options):
 
     # --jerry-heaplimit
     if options.jerry_heaplimit:
-        cmake_opt.append('-DMEM_HEAP_SIZE_KB=%d' % options.jerry_heaplimit)
+        cmake_opt.append('-DJERRY_GLOBAL_HEAP_SIZE=%d' % options.jerry_heaplimit)
         if options.jerry_heaplimit > 512:
             cmake_opt.append("-DEXTRA_JERRY_CMAKE_PARAMS='%s'" %
-                             "-DFEATURE_CPOINTER_32_BIT=ON")
+                             "-DJERRY_CPOINTER_32_BIT=ON")
 
     # --jerry-heap-section
     if options.jerry_heap_section:
@@ -361,7 +364,7 @@ def build_iotjs(options):
 
     # --jerry-debugger
     if options.jerry_debugger:
-        cmake_opt.append("-DFEATURE_DEBUGGER=ON")
+        cmake_opt.append("-DJERRY_DEBUGGER=ON")
 
     # --js-backtrace
     cmake_opt.append("-DFEATURE_JS_BACKTRACE=%s" %

@@ -249,7 +249,10 @@ def adjust_options(options):
             options.js_backtrace = "ON"
         else:
             options.js_backtrace = "OFF"
-
+    else:
+        if options.buildtype == 'release' and options.js_backtrace == 'ON':
+            print('no, you cannot enable js_backtrace in release build, see 3194e0f, force js_backtrace to OFF')
+            options.js_backtrace = "OFF"
 
 def print_progress(msg):
     print('==> %s\n' % msg)

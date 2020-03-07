@@ -96,6 +96,8 @@ endif()
 # Add a few cmake options based on buildtype/external cmake defines
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   list(APPEND DEPS_LIB_JERRY_ARGS -DJERRY_ERROR_MESSAGES=ON)
+else()
+  list(APPEND DEPS_LIB_JERRY_ARGS -DJERRY_ERROR_MESSAGES=OFF)
 endif()
 
 # NuttX is not using the default port implementation of JerryScript
